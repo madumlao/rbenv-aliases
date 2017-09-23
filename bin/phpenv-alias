@@ -2,9 +2,9 @@
 #
 # Summary: Symlink a short name to an exact version
 #
-# Usage: rbenv alias <name> [<version> | --auto | --remove]
-#        rbenv alias --auto
-#        rbenv alias [--list]
+# Usage: phpenv alias <name> [<version> | --auto | --remove]
+#        phpenv alias --auto
+#        phpenv alias [--list]
 #
 # Symlink a short name to an exact version.  Passing a second argument of
 # --auto selects the latest patch release of the given point version.  Passing
@@ -12,7 +12,7 @@
 
 shopt -s nullglob
 
-cd "$RBENV_ROOT/versions"
+cd "$PHPENV_ROOT/versions"
 
 resolve_link() {
   $(type -p greadlink readlink | head -1) "$1"
@@ -85,23 +85,23 @@ point_releases() {
 
 abort() {
   { if [ "$#" -eq 0 ]; then cat -
-    else echo "rbenv-alias: $*"
+    else echo "phpenv-alias: $*"
     fi
   } >&2
   exit 1
 }
 
-# Provide rbenv completions
+# Provide phpenv completions
 if [ --complete = "$1" ]; then
   shift
   if [ "$#" = 1 ]; then
     echo --auto
     echo --remove
-    rbenv-versions --bare
+    phpenv-versions --bare
   elif [ "$#" = 0 ]; then
     echo --auto
     echo --list
-    { point_releases; rbenv-versions --bare; } | sort -u
+    { point_releases; phpenv-versions --bare; } | sort -u
   fi
   exit 0
 fi
@@ -110,8 +110,8 @@ case "$#" in
 
   2)
     case "$1" in --*)
-      case "$2" in -*) abort < <(rbenv-help --usage alias) ;; esac
-      exec rbenv-alias "$2" "$1" ;;
+      case "$2" in -*) abort < <(phpenv-help --usage alias) ;; esac
+      exec phpenv-alias "$2" "$1" ;;
     esac
     if [ -e "$1" -a ! -L "$1" ]; then abort "Not clobbering $1"
     elif [ --remove = "$2" ]; then
@@ -141,10 +141,10 @@ case "$#" in
         done
         ;;
       --help)
-        exec rbenv-help alias
+        exec phpenv-help alias
         ;;
       -*)
-        abort < <(rbenv-help --usage alias)
+        abort < <(phpenv-help --usage alias)
         ;;
       *)
         if [ -L "$1" ]; then readlink "$1"
@@ -157,5 +157,5 @@ case "$#" in
 
   0) list ;;
 
-  *) abort < <(rbenv-help --usage alias) ;;
+  *) abort < <(phpenv-help --usage alias) ;;
 esac

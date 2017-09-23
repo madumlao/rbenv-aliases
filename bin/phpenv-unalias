@@ -2,24 +2,24 @@
 #
 # Summary: Remove one or more symlinks in the versions directory
 #
-# Usage: rbenv unalias <alias> [<alias> ...]
+# Usage: phpenv unalias <alias> [<alias> ...]
 
 case "$1" in
-# Provide rbenv completions
+# Provide phpenv completions
   --complete)
-    rbenv-alias --list | awk '{print $1}'
+    phpenv-alias --list | awk '{print $1}'
     exit 0
     ;;
   --help)
-    exec rbenv-help unalias
+    exec phpenv-help unalias
     ;;
   "")
-    rbenv-help --usage unalias >&2
+    phpenv-help --usage unalias >&2
     exit 1
     ;;
   *)
     for arg in "$@"; do
-      rbenv-alias "$arg" --remove
+      phpenv-alias "$arg" --remove
     done
     ;;
 esac
