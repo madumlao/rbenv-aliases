@@ -2,11 +2,11 @@
 #
 # Summary: Fake install program
 #
-# Usage: rbenv install version
+# Usage: phpenv install version
 #
 
 set -e
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$PHPENV_DEBUG" ] && set -x
 
 # Define `before_install` and `after_install` functions that allow
 # plugin hooks to register a string of code for execution before or
@@ -29,7 +29,7 @@ STATUS=0
 case "$1" in
 [0-9].*)
   VERSION_NAME=$1
-  d="$RBENV_ROOT/versions/$1"
+  d="$PHPENV_ROOT/versions/$1"
   mkdir -p "$d"
   echo $1 > "$d/RELEASE.txt"
   echo "Installed fake version $1"
@@ -40,7 +40,7 @@ case "$1" in
 
   ;;
 *)
-  echo 'Usage: rbenv-install version'
+  echo 'Usage: phpenv-install version'
   ;;
 esac
 exit $STATUS

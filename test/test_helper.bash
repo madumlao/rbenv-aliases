@@ -1,37 +1,37 @@
-unset RBENV_VERSION
-unset RBENV_DIR
+unset PHPENV_VERSION
+unset PHPENV_DIR
 
-RBENV_TEST_DIR="${BATS_TMPDIR}/rbenv"
-PLUGIN="${RBENV_TEST_DIR}/root/plugins/rbenv-aliases"
+PHPENV_TEST_DIR="${BATS_TMPDIR}/phpenv"
+PLUGIN="${PHPENV_TEST_DIR}/root/plugins/phpenv-aliases"
 
 # guard against executing this block twice due to bats internals
-if [ "$RBENV_ROOT" != "${RBENV_TEST_DIR}/root" ]; then
-  export RBENV_ROOT="${RBENV_TEST_DIR}/root"
-  export HOME="${RBENV_TEST_DIR}/home"
+if [ "$PHPENV_ROOT" != "${PHPENV_TEST_DIR}/root" ]; then
+  export PHPENV_ROOT="${PHPENV_TEST_DIR}/root"
+  export HOME="${PHPENV_TEST_DIR}/home"
   local parent
 
-  export INSTALL_HOOK="${BATS_TEST_DIRNAME}/../etc/rbenv.d/install/autoalias.bash"
-  export UNINSTALL_HOOK="${BATS_TEST_DIRNAME}/../etc/rbenv.d/uninstall/autoalias.bash"
+  export INSTALL_HOOK="${BATS_TEST_DIRNAME}/../etc/phpenv.d/install/autoalias.bash"
+  export UNINSTALL_HOOK="${BATS_TEST_DIRNAME}/../etc/phpenv.d/uninstall/autoalias.bash"
 
   PATH=/usr/bin:/bin:/usr/sbin:/sbin
-  PATH="${RBENV_TEST_DIR}/bin:$PATH"
+  PATH="${PHPENV_TEST_DIR}/bin:$PATH"
   PATH="${BATS_TEST_DIRNAME}/bin:$PATH"
   PATH="${BATS_TEST_DIRNAME}/../bin:$PATH"
-  PATH="${BATS_TEST_DIRNAME}/../rbenv/libexec:$PATH"
-  PATH="${BATS_TEST_DIRNAME}/../rbenv/test/libexec:$PATH"
-  PATH="${RBENV_ROOT}/shims:$PATH"
+  PATH="${BATS_TEST_DIRNAME}/../phpenv/libexec:$PATH"
+  PATH="${BATS_TEST_DIRNAME}/../phpenv/test/libexec:$PATH"
+  PATH="${PHPENV_ROOT}/shims:$PATH"
   export PATH
 fi
 
 teardown() {
-  rm -rf "$RBENV_TEST_DIR"
+  rm -rf "$PHPENV_TEST_DIR"
 }
 
 flunk() {
   { if [ "$#" -eq 0 ]; then cat -
     else echo "$@"
     fi
-  } | sed "s:${RBENV_TEST_DIR}:TEST_DIR:g" >&2
+  } | sed "s:${PHPENV_TEST_DIR}:TEST_DIR:g" >&2
   return 1
 }
 
@@ -40,10 +40,10 @@ create_versions() {
   for v in $*
   do
     #echo "Created version: $d"
-    d="$RBENV_TEST_DIR/root/versions/$v"
+    d="$PHPENV_TEST_DIR/root/versions/$v"
     mkdir -p "$d/bin"
     echo $v > "$d/RELEASE.txt"
-    ln -nfs /bin/echo "$d/bin/ruby"
+    ln -nfs /bin/echo "$d/bin/php"
   done
 }
 
@@ -52,25 +52,25 @@ create_alias() {
   local alias="$1"
   local version="$2"
 
-  mkdir -p "$RBENV_ROOT/versions"
-  ln -nfs "$RBENV_ROOT/versions/$version" "$RBENV_ROOT/versions/$alias"
+  mkdir -p "$PHPENV_ROOT/versions"
+  ln -nfs "$PHPENV_ROOT/versions/$version" "$PHPENV_ROOT/versions/$alias"
 }
 
 # assert_alias_version alias version
 
 assert_alias_version() {
-  if [ ! -f $RBENV_ROOT/versions/$1/RELEASE.txt ]
+  if [ ! -f $PHPENV_ROOT/versions/$1/RELEASE.txt ]
   then
     echo "Versions:"
-    (cd $RBENV_ROOT/versions ; ls -l)
+    (cd $PHPENV_ROOT/versions ; ls -l)
   fi
-  assert_equal "$2" "$(cat "$RBENV_ROOT/versions/$1/RELEASE.txt" 2>&1)"
+  assert_equal "$2" "$(cat "$PHPENV_ROOT/versions/$1/RELEASE.txt" 2>&1)"
 }
 
 assert_alias_missing() {
-  if [ -f $RBENV_ROOT/versions/$1/RELEASE.txt ]
+  if [ -f $PHPENV_ROOT/versions/$1/RELEASE.txt ]
   then
-    assert_equal "no-version" "$(cat "$RBENV_ROOT/versions/$1/RELEASE.txt" 2>&1)"
+    assert_equal "no-version" "$(cat "$PHPENV_ROOT/versions/$1/RELEASE.txt" 2>&1)"
   fi
 }
 

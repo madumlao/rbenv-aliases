@@ -2,11 +2,11 @@
 #
 # Summary: Fake uninstall program
 #
-# Usage: nodenv uninstall version
+# Usage: phpenv uninstall version
 #
 
 set -e
-[ -n "$NODENV_DEBUG" ] && set -x
+[ -n "$PHPENV_DEBUG" ] && set -x
 
 # Define `before_uninstall` and `after_uninstall` functions that allow
 # plugin hooks to register a string of code for execution before or
@@ -24,9 +24,9 @@ if [ -n "$UNINSTALL_HOOK" ]; then
 fi
 
 case "$1" in
-*[0-9].*)
+[0-9].*)
   VERSION_NAME=${1:?}
-  rm -rf "$NODENV_ROOT/versions/$1"
+  rm -rf "$PHPENV_ROOT/versions/$1"
   echo "Uninstalled fake version $1"
 
   echo Executing after_uninstall hooks.
@@ -34,6 +34,6 @@ case "$1" in
 
   ;;
 *)
-  echo 'Usage: nodenv-uninstall version'
+  echo 'Usage: phpenv-install version'
   ;;
 esac
