@@ -53,10 +53,10 @@ $ phpenv install 7.2.6
 
 ## Installation
 
-    mkdir -p "$(rbenv root)/plugins"
-    git clone git://github.com/tpope/rbenv-aliases.git \
-      "$(rbenv root)/plugins/rbenv-aliases"
-    rbenv alias --auto
+    mkdir -p "$(phpenv root)/plugins"
+    git clone git://github.com/madumlao/phpenv-aliases.git \
+      "$(phpenv root)/plugins/phpenv-aliases"
+    phpenv alias --auto
 
 ## Thanks
 
